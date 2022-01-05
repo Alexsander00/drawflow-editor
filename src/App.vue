@@ -1,4 +1,5 @@
 <template>
+	<Menu />
 	<div id="drawflow" />
 </template>
 
@@ -11,11 +12,14 @@ import { onMounted } from '@vue/runtime-core'
 import Drawflow from 'drawflow'
 import { useStore } from 'vuex'
 
+import Menu from './components/Menu/Menu.vue'
+
+import 'normalize.css'
 import 'drawflow/dist/drawflow.min.css'
 
 export default {
 	name: 'App',
-	components: {},
+	components: { Menu },
 	setup() {
 		const editor = shallowRef({})
 		const store = useStore()
@@ -30,6 +34,7 @@ export default {
 				context,
 			)
 
+			editor.value.start()
 			store.commit('setEditor', editor)
 		})
 	},
@@ -37,12 +42,30 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+* {
+	font-family: 'Roboto', sans-serif;
+}
+
 #app {
 	display: grid;
+	height: 100vh;
 	grid-template: 'menu drawflow' 1fr / 20% 1fr;
 }
 
 #drawflow {
 	grid-area: drawflow;
+}
+
+.drawflow .drawflow-node {
+	width: auto;
+	min-width: 100px;
+}
+
+input {
+	border-radius: 20px;
+	max-width: 120px;
+	margin: 5px;
+	height: 16px;
 }
 </style>

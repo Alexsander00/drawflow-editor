@@ -7,7 +7,6 @@ export const store = createStore({
 	mutations: {
 		setEditor: (state, payload) => {
 			state.editor = payload
-			state.editor.start()
 		},
 	},
 })
