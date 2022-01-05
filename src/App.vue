@@ -1,26 +1,48 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+	<div id="drawflow" />
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { h, getCurrentInstance, render } from 'vue'
+
+import { shallowRef } from '@vue/reactivity'
+import { onMounted } from '@vue/runtime-core'
+
+import Drawflow from 'drawflow'
+import { useStore } from 'vuex'
+
+import 'drawflow/dist/drawflow.min.css'
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
+	name: 'App',
+	components: {},
+	setup() {
+		const editor = shallowRef({})
+		const store = useStore()
+
+		onMounted(() => {
+			const Vue = { version: 3, h, render }
+			const context = getCurrentInstance().appContext.app._context
+
+			editor.value = new Drawflow(
+				document.getElementById('drawflow'),
+				Vue,
+				context,
+			)
+
+			store.commit('setEditor', editor)
+		})
+	},
 }
 </script>
 
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+	display: grid;
+	grid-template: 'menu drawflow' 1fr / 20% 1fr;
+}
+
+#drawflow {
+	grid-area: drawflow;
 }
 </style>
