@@ -1,6 +1,7 @@
 <template>
 	<Menu />
 	<div id="drawflow" />
+	<CodeMirror />
 </template>
 
 <script>
@@ -10,16 +11,20 @@ import { shallowRef } from '@vue/reactivity'
 import { onMounted } from '@vue/runtime-core'
 
 import Drawflow from 'drawflow'
+
 import { useStore } from 'vuex'
+
+import CodeMirror from './components/CodeMirror.vue'
 
 import Menu from './components/Menu/Menu.vue'
 
-import 'normalize.css'
 import 'drawflow/dist/drawflow.min.css'
+
+import 'normalize.css'
 
 export default {
 	name: 'App',
-	components: { Menu },
+	components: { Menu, CodeMirror },
 	setup() {
 		const editor = shallowRef({})
 		const store = useStore()
@@ -50,7 +55,7 @@ export default {
 #app {
 	display: grid;
 	height: 100vh;
-	grid-template: 'menu drawflow' 1fr / 20% 1fr;
+	grid-template: 'menu drawflow' 2fr 'menu codemirror' auto / 20% 1fr;
 }
 
 #drawflow {
