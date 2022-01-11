@@ -3,14 +3,10 @@
 </template>
 
 <script>
-import { computed } from '@vue/reactivity'
-import { watch } from '@vue/runtime-core'
-
-import { useStore } from 'vuex'
-
 import Button from '../Button.vue'
 
 import EndForNode from './EndForNode.vue'
+import useEditor from '../../../../hooks/useEditor'
 
 export default {
 	name: 'EndFor',
@@ -18,14 +14,10 @@ export default {
 		Button,
 	},
 	setup() {
-		const store = useStore()
-		const editor = computed(() => store.state.editor)
+		const { addNode, registerNode } = useEditor()
+		registerNode('EndFor', EndForNode)
 
-		watch(editor, () => editor.value.registerNode('EndFor', EndForNode))
-
-		const onClick = () => {
-			editor.value.addNode('EndFor', 1, 1, 150, 300, '', {}, 'EndFor', 'vue')
-		}
+		const onClick = () => addNode('EndFor', 1, 1, 150, 300, {}, 'EndFor', 'vue')
 
 		return {
 			onClick,

@@ -1,22 +1,19 @@
 <template>
-	<button @click="onClick">
+	<button @click="clearNodes">
 		<font-awesome-icon :icon="['fas', 'undo']" />
 	</button>
 </template>
 
 <script>
-import { computed } from '@vue/reactivity'
-import { useStore } from 'vuex'
+import useEditor from '../../../hooks/useEditor'
+
 export default {
 	name: 'Restart',
 	setup() {
-		const store = useStore()
-		const editor = computed(() => store.state.editor)
-
-		const onClick = () => editor.value.clear()
+		const { clearNodes } = useEditor()
 
 		return {
-			onClick,
+			clearNodes,
 		}
 	},
 }

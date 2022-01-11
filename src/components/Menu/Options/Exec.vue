@@ -1,5 +1,5 @@
 <template>
-	<button @click="onClick">
+	<button>
 		<font-awesome-icon :icon="['fas', 'play']" />
 	</button>
 </template>

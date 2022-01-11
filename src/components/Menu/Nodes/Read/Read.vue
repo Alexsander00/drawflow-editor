@@ -3,14 +3,11 @@
 </template>
 
 <script>
-import { computed } from '@vue/reactivity'
-import { watch } from '@vue/runtime-core'
-
-import { useStore } from 'vuex'
-
 import ReadNode from './ReadNode.vue'
 
 import Button from '../Button.vue'
+
+import useEditor from '../../../../hooks/useEditor'
 
 export default {
 	name: 'Read',
@@ -18,14 +15,10 @@ export default {
 		Button,
 	},
 	setup() {
-		const store = useStore()
-		const editor = computed(() => store.state.editor)
+		const { addNode, registerNode } = useEditor()
+		registerNode('Read', ReadNode)
 
-		watch(editor, () => editor.value.registerNode('Read', ReadNode))
-
-		const onClick = () => {
-			editor.value.addNode('Read', 1, 1, 150, 300, '', {}, 'Read', 'vue')
-		}
+		const onClick = () => addNode('Read', 1, 1, 150, 300, {}, 'Read', 'vue')
 
 		return {
 			onClick,

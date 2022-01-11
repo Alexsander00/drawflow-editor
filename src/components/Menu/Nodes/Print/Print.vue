@@ -3,14 +3,11 @@
 </template>
 
 <script>
-import { computed } from '@vue/reactivity'
-import { watch } from '@vue/runtime-core'
-
-import { useStore } from 'vuex'
-
 import PrintNode from './PrintNode.vue'
 
 import Button from '../Button.vue'
+
+import useEditor from '../../../../hooks/useEditor'
 
 export default {
 	name: 'Print',
@@ -18,14 +15,10 @@ export default {
 		Button,
 	},
 	setup() {
-		const store = useStore()
-		const editor = computed(() => store.state.editor)
+		const { addNode, registerNode } = useEditor()
+		registerNode('Print', PrintNode)
 
-		watch(editor, () => editor.value.registerNode('Print', PrintNode))
-
-		const onClick = () => {
-			editor.value.addNode('Print', 1, 1, 150, 300, '', {}, 'Print', 'vue')
-		}
+		const onClick = () => addNode('Print', 1, 1, 150, 300, {}, 'Print', 'vue')
 
 		return {
 			onClick,

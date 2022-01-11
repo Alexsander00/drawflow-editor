@@ -3,13 +3,10 @@
 </template>
 
 <script>
-import { computed } from '@vue/reactivity'
-import { watch } from '@vue/runtime-core'
-
-import { useStore } from 'vuex'
-
 import AssignNode from './AssignNode.vue'
 import Button from '../Button.vue'
+
+import useEditor from '../../../../hooks/useEditor'
 
 export default {
 	name: 'Assign',
@@ -17,14 +14,10 @@ export default {
 		Button,
 	},
 	setup() {
-		const store = useStore()
-		const editor = computed(() => store.state.editor)
+		const { addNode, registerNode } = useEditor()
+		registerNode('Assign', AssignNode)
 
-		watch(editor, () => editor.value.registerNode('Assign', AssignNode))
-
-		const onClick = () => {
-			editor.value.addNode('Assign', 1, 1, 150, 300, '', {}, 'Assign', 'vue')
-		}
+		const onClick = () => addNode('Assign', 1, 1, 150, 300, {}, 'Assign', 'vue')
 
 		return {
 			onClick,

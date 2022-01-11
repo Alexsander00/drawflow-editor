@@ -67,6 +67,10 @@ export default {
 	min-width: 100px;
 }
 
+.startNode {
+	border-radius: 100px !important;
+}
+
 input {
 	border-radius: 20px;
 	max-width: 120px;

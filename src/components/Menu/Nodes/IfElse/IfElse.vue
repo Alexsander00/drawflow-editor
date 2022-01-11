@@ -3,14 +3,11 @@
 </template>
 
 <script>
-import { computed } from '@vue/reactivity'
-import { watch } from '@vue/runtime-core'
-
-import { useStore } from 'vuex'
-
-import IfElse from './IfElseNode.vue'
+import IfElseNode from './IfElseNode.vue'
 
 import Button from '../Button.vue'
+
+import useEditor from '../../../../hooks/useEditor'
 
 export default {
 	name: 'IfElse',
@@ -18,14 +15,10 @@ export default {
 		Button,
 	},
 	setup() {
-		const store = useStore()
-		const editor = computed(() => store.state.editor)
+		const { addNode, registerNode } = useEditor()
+		registerNode('IfElse', IfElseNode)
 
-		watch(editor, () => editor.value.registerNode('IfElse', IfElse))
-
-		const onClick = () => {
-			editor.value.addNode('IfElse', 1, 2, 150, 300, '', {}, 'IfElse', 'vue')
-		}
+		const onClick = () => addNode('IfElse', 1, 2, 150, 300, {}, 'IfElse', 'vue')
 
 		return {
 			onClick,
