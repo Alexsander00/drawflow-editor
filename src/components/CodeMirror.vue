@@ -2,7 +2,7 @@
 	<div>
 		<div class="options">
 			<label for="theme">Theme</label>
-			<select name="theme" v-model="selectedTheme" @change="onThemeChange">
+			<select name="theme" v-model="currentTheme" @change="changeTheme">
 				<option value="ayu-dark">ayu-dark</option>
 				<option value="3024-night">3024-night</option>
 				<option value="ambiance">ambiance</option>
@@ -10,17 +10,17 @@
 			</select>
 
 			<label for="theme">Language</label>
-			<select name="language" v-model="selectedLang" @change="onLangChange">
+			<select name="language" v-model="currentLang" @change="changeLang">
 				<option value="python">python</option>
 				<option value="javascript">javascript</option>
 			</select>
 		</div>
-		<textarea id="editor" v-model="content" />
+		<textarea id="editor" />
 	</div>
 </template>
 
 <script>
-import { onMounted, ref, shallowRef } from '@vue/runtime-core'
+import { onMounted, shallowRef } from '@vue/runtime-core'
 
 import * as CodeMirror from 'codemirror'
 
@@ -34,39 +34,37 @@ import 'codemirror/theme/3024-night.css'
 import 'codemirror/theme/ambiance.css'
 import 'codemirror/theme/colorforth.css'
 
+import useCodeMirror from '../hooks/useCodeMirror'
+import { useStore } from 'vuex'
+
 export default {
 	name: 'CodeMirror',
 	setup() {
-		const editor = shallowRef({})
-		const content = ref('Hello world!')
+		const store = useStore()
 
-		const selectedTheme = ref('ayu-dark')
-		const selectedLang = ref('python')
+		const cmEditor = shallowRef({})
 
-		const onThemeChange = () => {
-			editor.value.setOption('theme', selectedTheme.value)
-		}
-
-		const onLangChange = () => {
-			editor.value.setOption('mode', selectedLang.value)
-		}
+		const { currentTheme, currentLang, content, changeTheme, changeLang } =
+			useCodeMirror()
 
 		onMounted(() => {
-			editor.value = CodeMirror.fromTextArea(document.getElementById('editor'), {
+			cmEditor.value = CodeMirror.fromTextArea(document.getElementById('editor'), {
 				mode: 'python',
 				theme: 'ayu-dark',
 				lineNumber: true,
 				smartIndent: true,
 				matchBrackets: true,
 			})
+
+			store.commit('setCodeMirror', cmEditor)
 		})
 
 		return {
-			selectedTheme,
-			selectedLang,
 			content,
-			onThemeChange,
-			onLangChange,
+			currentTheme,
+			currentLang,
+			changeTheme,
+			changeLang,
 		}
 	},
 }
