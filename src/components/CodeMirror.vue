@@ -22,6 +22,7 @@
 <script>
 import { onMounted, shallowRef } from '@vue/runtime-core'
 
+import { useStore } from 'vuex'
 import * as CodeMirror from 'codemirror'
 
 import 'codemirror/mode/javascript/javascript'
@@ -35,7 +36,6 @@ import 'codemirror/theme/ambiance.css'
 import 'codemirror/theme/colorforth.css'
 
 import useCodeMirror from '../hooks/useCodeMirror'
-import { useStore } from 'vuex'
 
 export default {
 	name: 'CodeMirror',
@@ -43,9 +43,14 @@ export default {
 		const store = useStore()
 
 		const cmEditor = shallowRef({})
-
-		const { currentTheme, currentLang, content, changeTheme, changeLang } =
-			useCodeMirror()
+		const {
+			content,
+			currentTheme,
+			currentLang,
+			changeTheme,
+			changeLang,
+			setupNodesListeners,
+		} = useCodeMirror()
 
 		onMounted(() => {
 			cmEditor.value = CodeMirror.fromTextArea(document.getElementById('editor'), {
@@ -57,6 +62,7 @@ export default {
 			})
 
 			store.commit('setCodeMirror', cmEditor)
+			setupNodesListeners()
 		})
 
 		return {

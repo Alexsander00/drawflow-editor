@@ -15,7 +15,8 @@ export default {
 		const { clearContent } = useCodeMirror()
 
 		const onClick = () => {
-			clearNodes(), clearContent()
+			clearNodes()
+			clearContent()
 		}
 
 		return {

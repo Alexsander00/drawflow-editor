@@ -5,7 +5,7 @@
 		<div>
 			<label for="type">type</label>
 			<select name="type" df-type>
-				<option selected value="string">string</option>
+				<option value="string">string</option>
 				<option value="number">number</option>
 			</select>
 		</div>

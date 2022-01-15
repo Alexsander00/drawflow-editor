@@ -18,7 +18,8 @@ export default {
 		const { addNode, registerNode } = useEditor()
 		registerNode('Read', ReadNode)
 
-		const onClick = () => addNode('Read', 1, 1, 150, 300, {}, 'Read', 'vue')
+		const onClick = () =>
+			addNode('Read', 1, 1, 150, 300, { type: 'string' }, 'Read', 'vue')
 
 		return {
 			onClick,
