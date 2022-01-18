@@ -2,13 +2,15 @@
 	<Menu />
 	<div id="drawflow" />
 	<CodeMirror />
+	<SaveModalForm />
+	<ListModalForm />
 </template>
 
 <script>
 import { h, getCurrentInstance, render } from 'vue'
 
-import { shallowRef } from '@vue/reactivity'
-import { onMounted } from '@vue/runtime-core'
+import { ref, shallowRef } from '@vue/reactivity'
+import { onMounted, provide } from '@vue/runtime-core'
 
 import Drawflow from 'drawflow'
 
@@ -18,16 +20,22 @@ import CodeMirror from './components/CodeMirror.vue'
 
 import Menu from './components/Menu/Menu.vue'
 
+import SaveModalForm from './components/Menu/Options/Save/SaveForm.vue'
+import ListModalForm from './components/Menu/Options/List/ListForm.vue'
+
 import 'drawflow/dist/drawflow.min.css'
 
 import 'normalize.css'
 
 export default {
 	name: 'App',
-	components: { Menu, CodeMirror },
+	components: { Menu, CodeMirror, SaveModalForm, ListModalForm },
 	setup() {
 		const editor = shallowRef({})
 		const store = useStore()
+
+		provide('showSaveModal', ref(false))
+		provide('showListModal', ref(false))
 
 		onMounted(() => {
 			const Vue = { version: 3, h, render }

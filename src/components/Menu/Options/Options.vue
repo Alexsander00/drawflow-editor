@@ -9,8 +9,8 @@
 
 <script>
 import Exec from './Exec.vue'
-import List from './List.vue'
-import Save from './Save.vue'
+import List from './List/List.vue'
+import Save from './Save/Save.vue'
 import Restart from './Restart.vue'
 
 export default {
