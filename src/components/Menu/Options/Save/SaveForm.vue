@@ -9,25 +9,64 @@
 			<div class="form">
 				<div class="form-name">
 					<label for="name">Name </label>
-					<input name="name" type="text" />
+					<input name="name" type="text" v-model="name" />
 				</div>
-				<button class="save">Save</button>
+				<button class="save" @click="save">Save</button>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script>
-import { inject } from '@vue/runtime-core'
+import { inject, ref } from '@vue/runtime-core'
+import axios from 'axios'
+import useEditor from '../../../../hooks/useEditor'
 
 export default {
 	setup() {
 		const showSaveModal = inject('showSaveModal')
+		const { exportData } = useEditor()
+		const name = ref('')
 
-		const close = () => (showSaveModal.value = false)
+		const close = () => {
+			name.value = ''
+			showSaveModal.value = false
+		}
+
+		const save = async () => {
+			const data = exportData()
+			const keys = Object.keys(data)
+
+			let arrData = []
+
+			for (let index = 0; index < keys.length; index++) {
+				arrData.push(data[keys[index]])
+			}
+
+			const date = new Date()
+			const month =
+				date.getMonth() + 1 < 10
+					? '0'.concat(date.getMonth() + 1)
+					: (date.getMonth() + 1).toString()
+
+			try {
+				await axios.post('http://localhost:3000/flowchart', {
+					Name: name.value,
+					Data: arrData,
+					CreationDate: `${date.getDate()} / ${month} / ${date.getFullYear()}`,
+				})
+
+				alert('flowchart saved successfully')
+				close()
+			} catch (error) {
+				alert('an error ocurred while saving')
+			}
+		}
 
 		return {
+			name,
 			showSaveModal,
+			save,
 			close,
 		}
 	},
