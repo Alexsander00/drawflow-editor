@@ -1,32 +1,35 @@
 <template>
 	<div class="container" v-if="showListModal">
 		<div class="content">
-			<Row :items="items" />
+			<Grid :items="items" />
 		</div>
 	</div>
 </template>
 
 <script>
-import { inject } from '@vue/runtime-core'
+import { inject, ref, watch } from '@vue/runtime-core'
 
-import Row from './Row.vue'
+import Grid from './Grid.vue'
+import axios from 'axios'
 
 export default {
 	components: {
-		Row,
+		Grid,
 	},
 	setup() {
 		const showListModal = inject('showListModal')
-		const items = [
-			{
-				id: 1,
-				name: 'sumar',
-			},
-			{
-				id: 2,
-				name: 'restar',
-			},
-		]
+		const items = ref([])
+
+		watch(showListModal, async () => {
+			try {
+				if (showListModal.value) {
+					const res = await axios.get('http://localhost:3000/flowchart')
+					items.value = res.data.All
+				}
+			} catch (error) {
+				alert('an error ocurred while fetching data')
+			}
+		})
 
 		return {
 			showListModal,
@@ -45,7 +48,7 @@ export default {
 	justify-content: center;
 	position: fixed;
 	width: 100%;
-	z-index: 1;
+	z-index: 10;
 }
 
 .content {

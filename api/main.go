@@ -1,6 +1,7 @@
 package main
 
 import (
+	"drawflow/handlers/list"
 	"drawflow/handlers/save"
 	"encoding/json"
 	"net/http"
@@ -16,6 +17,19 @@ func main() {
 		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders: []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
 	}))
+
+	r.Get("/flowchart", func (w http.ResponseWriter, r *http.Request)  {
+		w.Header().Set("Content-Type", "application/json")
+
+		res, err := list.ListHandler()
+
+		if err != nil {
+			w.WriteHeader(http.StatusBadRequest)
+		}
+
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(res)
+	})
 
 	r.Post("/flowchart", func (w http.ResponseWriter, r *http.Request)  {
 		w.Header().Set("Content-Type", "application/json")
