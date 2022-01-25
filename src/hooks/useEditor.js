@@ -25,6 +25,21 @@ export default function () {
 
 	const clearNodes = () => editor.value.clear()
 
+	const importData = nodes => {
+		const data = {}
+		for (let index = 1; index <= nodes.length; index++) {
+			data[index] = nodes[index - 1]
+		}
+
+		editor.value.import({
+			drawflow: {
+				Home: {
+					data,
+				},
+			},
+		})
+	}
+
 	const exportData = () => editor.value.export().drawflow.Home.data
 
 	return {
@@ -33,6 +48,7 @@ export default function () {
 		registerNode,
 		getNodeFromID,
 		clearNodes,
+		importData,
 		exportData,
 	}
 }
